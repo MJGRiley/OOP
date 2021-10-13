@@ -6,7 +6,7 @@ const team = []
 let index = ''
 
 function myTeamMembers() {
-    const teamQs = [
+    const teamQs = [ //Manager Questions
         {
         type: 'input',
         message: 'What\'s the team manager\'s name?',
@@ -29,17 +29,15 @@ function myTeamMembers() {
     .prompt(teamQs)
     .then((answers) => {
         let newManager = new Manager(answers.teamM,answers.eID,answers.eMail,answers.oficina)
-        console.log(newManager)
         team.push(newManager)
+        index.concat(mHTML)
         addEngineerOrInter()
-
-
     })
 }
 myTeamMembers()
 
-function addEngineerOrInter() { //asks if you want to add an Engineer,Intern, or finish
-    const eOIQs = [
+function addEngineerOrInter() { //asks if you want to add an Engineer, Intern, or finish
+    const eOIQs = [ //Just one question
         {
             type: 'list',
             message: 'Do you want to',
@@ -57,7 +55,7 @@ function addEngineerOrInter() { //asks if you want to add an Engineer,Intern, or
 }
 
 function engineer() {
-    const eQs = [
+    const eQs = [ //Engineer Questions
         {
             type: 'input',
             message: 'Input Engineer\'s Name',
@@ -81,12 +79,13 @@ function engineer() {
     .then((answers) => {
         let newEngineer = new Engineer(answers.engineer,answers.engineerID,answers.eeMail,answers.eGH,)
         team.push(newEngineer)
+        index.concat(eHTML)
         addEngineerOrInter()
     })
 }
 
 function intern() {
-    const iQs = [
+    const iQs = [ //Intern Questions
         {
             type: 'input',
             message: 'What is the Intern\'s Name?',
@@ -110,18 +109,16 @@ function intern() {
     .then((answers) => {
         let newIntern = new Intern(answers.intern,answers.internID,answers.ieMail,answers.iSchool)
         team.push(newIntern)
+        index.concat(iHTML)
         addEngineerOrInter()
     })
 }
 
 function HTMLify() {
-    let temp = mHTML(team.shift())
-    index.concat(temp)
-    for (const value of team) {
-        console.log(value)
-        // if engineer index.concat(eHTML)
-        // if intern index.concat(iHTML)
-    }
     index.concat(theEnd())
-    //write to file
+    putItInAFile()
+}
+
+function putItInAFile() {
+    
 }
