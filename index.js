@@ -1,5 +1,8 @@
 const inquire = require('inquirer')
-const {generateHTML} = require('./utils/teamBuilder')
+const Manager = require('./lib/manager')
+const Engineer = require('./lib/engineer')
+const Intern = require('./lib/intern')
+const team = []
 
 function myTeamMembers() {
     const teamQs = [
@@ -24,13 +27,16 @@ function myTeamMembers() {
     inquire // asks the questions above and returns answers in an object
     .prompt(teamQs)
     .then((answers) => {
-        addEngineerOrInter(answers)
+        let newManager = new Manager(answers.teamM,answers.eID,answers.eMail,answers.oficina)
+        console.log(newManager)
+        team.push(newManager)
+        addEngineerOrInter()
+
     })
 }
 myTeamMembers()
 
-function addEngineerOrInter(answers) {
-    const temp = answers
+function addEngineerOrInter() { //asks if you want to add an Engineer,Intern, or finish
     const eOIQs = [
         {
             type: 'list',
@@ -39,18 +45,16 @@ function addEngineerOrInter(answers) {
             choices: ['add an Engineer?','add an Intern?','finish building your team?']
         },
     ]
-    inquire // asks the questions above and returns answers in an object
+    inquire 
     .prompt(eOIQs)
     .then((answers) => {
-        if (answers.eOI == 'add an Engineer?') {engineer(temp)}
-        if (answers.eOI == 'add an Intern?') {intern(temp)}
-        if (answers.eOI == 'finish building your team?') {generateHTML(temp)}
+        if (answers.eOI == 'add an Engineer?') {engineer()}
+        if (answers.eOI == 'add an Intern?') {intern()}
+        if (answers.eOI == 'finish building your team?') {}
     })
 }
 
-function engineer(answers) {
-    const temp = answers
-    console.log(typeof temp)
+function engineer() {
     const eQs = [
         {
             type: 'input',
@@ -73,16 +77,13 @@ function engineer(answers) {
     inquire // asks the questions above and returns answers in an object
     .prompt(eQs)
     .then((answers) => {
-    console.log(answers)
-        console.log('Engineer')
-        const merged = Object.assign({},temp,answers)
-        addEngineerOrInter(merged)
+        let newEngineer = new Engineer(answers.engineer,answers.engineerID,answers.eeMail,answers.eGH,)
+        team.push(newEngineer)
+        addEngineerOrInter()
     })
 }
 
-function intern(answers) {
-    // WHEN I select the intern option THEN I am prompted to enter the intern’s name, ID, email, and school, and I am taken back to the menu
-    const temp = answers
+function intern() {
     const iQs = [
         {
             type: 'input',
@@ -105,9 +106,9 @@ function intern(answers) {
     inquire // asks the questions above and returns answers in an object
     .prompt(iQs)
     .then((answers) => {
-    console.log(answers)
-        console.log('Intern')
-        const merged = Object.assign({},temp,answers)
-        addEngineerOrInter(merged)
+        let newIntern = new Intern(answers.intern,answers.internID,answers.ieMail,answers.iSchool)
+        team.push(newIntern)
+        addEngineerOrInter()
     })
 }
+
