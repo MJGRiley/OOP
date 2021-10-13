@@ -1,4 +1,5 @@
 const inquire = require('inquirer')
+const {generateHTML} = require('./utils/teamBuilder')
 
 function myTeamMembers() {
     const teamQs = [
@@ -12,33 +13,101 @@ function myTeamMembers() {
         name: 'eID',
         },{
         type: 'input',
-        message: 'Please input email address?',
+        message: 'Please input email address',
         name: 'eMail',
         },{
         type: 'input',
-        message: 'Please input office number?',
+        message: 'Please input office number',
         name: 'oficina',
         },
     ]
     inquire // asks the questions above and returns answers in an object
     .prompt(teamQs)
     .then((answers) => {
-        console.log(answers)
+        addEngineerOrInter(answers)
     })
 }
 myTeamMembers()
 
-// WHEN I start the application
-// I enter the team manager’s name, employee ID, email address, and office number THEN I am presented with a menu with the option to add an engineer or an intern or to finish building my team
-// prompted for my team members and their information
+function addEngineerOrInter(answers) {
+    const temp = answers
+    const eOIQs = [
+        {
+            type: 'list',
+            message: 'Do you want to',
+            name: 'eOI',
+            choices: ['add an Engineer?','add an Intern?','finish building your team?']
+        },
+    ]
+    inquire // asks the questions above and returns answers in an object
+    .prompt(eOIQs)
+    .then((answers) => {
+        if (answers.eOI == 'add an Engineer?') {engineer(temp)}
+        if (answers.eOI == 'add an Intern?') {intern(temp)}
+        if (answers.eOI == 'finish building your team?') {generateHTML(temp)}
+    })
+}
 
+function engineer(answers) {
+    const temp = answers
+    console.log(typeof temp)
+    const eQs = [
+        {
+            type: 'input',
+            message: 'Input Engineer\'s Name',
+            name: 'engineer'
+        },{
+            type: 'input',
+            message: 'Input Engineer\'s ID',
+            name: 'engineerID'
+        },{
+            type: 'input',
+            message: 'Input Engineer\'s eMail address',
+            name: 'eeMail'
+        },{
+            type: 'input',
+            message: 'Input Engineer\'s GitHub username',
+            name: 'eGH'
+        },
+    ]
+    inquire // asks the questions above and returns answers in an object
+    .prompt(eQs)
+    .then((answers) => {
+    console.log(answers)
+        console.log('Engineer')
+        const merged = Object.assign({},temp,answers)
+        addEngineerOrInter(merged)
+    })
+}
 
-
-
-
-// WHEN I decide to finish building my team THEN I exit the application, and the HTML is generated that displays a nicely formatted team roster based on user input
-// WHEN I click on an email address in the HTML THEN my default email program opens and populates the TO field of the email with the address
-// WHEN I click on the GitHub username THEN that GitHub profile opens in a new tab
-
-// WHEN I select the engineer option THEN I am prompted to enter the engineer’s name, ID, email, and GitHub username, and I am taken back to the menu
-// WHEN I select the intern option THEN I am prompted to enter the intern’s name, ID, email, and school, and I am taken back to the menu
+function intern(answers) {
+    // WHEN I select the intern option THEN I am prompted to enter the intern’s name, ID, email, and school, and I am taken back to the menu
+    const temp = answers
+    const iQs = [
+        {
+            type: 'input',
+            message: 'What is the Intern\'s Name?',
+            name: 'intern',
+        },{
+            type: 'input',
+            message: 'What is the Intern\'s ID?',
+            name: 'internID',
+        },{
+            type: 'input',
+            message: 'What is the Intern\'s email address?',
+            name: 'ieMail',
+        },{
+            type: 'input',
+            message: 'What school does the Intern\'s attend?',
+            name: 'iSchool',
+        },
+    ]
+    inquire // asks the questions above and returns answers in an object
+    .prompt(iQs)
+    .then((answers) => {
+    console.log(answers)
+        console.log('Intern')
+        const merged = Object.assign({},temp,answers)
+        addEngineerOrInter(merged)
+    })
+}
