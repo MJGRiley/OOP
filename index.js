@@ -1,8 +1,9 @@
 const inquire = require('inquirer')
-const Manager = require('./lib/manager')
-const Engineer = require('./lib/engineer')
-const Intern = require('./lib/intern')
+const {Manager, mHTML, theEnd} = require('./lib/manager')
+const {Engineer, eHTML} = require('./lib/engineer')
+const {Intern, iHTML} = require('./lib/intern')
 const team = []
+let index = ''
 
 function myTeamMembers() {
     const teamQs = [
@@ -32,6 +33,7 @@ function myTeamMembers() {
         team.push(newManager)
         addEngineerOrInter()
 
+
     })
 }
 myTeamMembers()
@@ -50,7 +52,7 @@ function addEngineerOrInter() { //asks if you want to add an Engineer,Intern, or
     .then((answers) => {
         if (answers.eOI == 'add an Engineer?') {engineer()}
         if (answers.eOI == 'add an Intern?') {intern()}
-        if (answers.eOI == 'finish building your team?') {}
+        if (answers.eOI == 'finish building your team?') {HTMLify()}
     })
 }
 
@@ -112,3 +114,14 @@ function intern() {
     })
 }
 
+function HTMLify() {
+    let temp = mHTML(team.shift())
+    index.concat(temp)
+    for (const value of team) {
+        console.log(value)
+        // if engineer index.concat(eHTML)
+        // if intern index.concat(iHTML)
+    }
+    index.concat(theEnd())
+    //write to file
+}
