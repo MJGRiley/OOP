@@ -1,8 +1,9 @@
 const inquire = require('inquirer')
-const {Manager, mHTML, theEnd} = require('./lib/manager')
-const {Engineer, eHTML} = require('./lib/engineer')
-const {Intern, iHTML} = require('./lib/intern')
-const team = []
+const fs = require('fs')
+const Manager = require('./lib/Manager')
+const Engineer = require('./lib/Engineer')
+const Intern = require('./lib/Intern')
+const {eHTML,mHTML,iHTML,theEnd} = require('./src/generateHTML')
 let index = ''
 
 function myTeamMembers() {
@@ -29,8 +30,7 @@ function myTeamMembers() {
     .prompt(teamQs)
     .then((answers) => {
         let newManager = new Manager(answers.teamM,answers.eID,answers.eMail,answers.oficina)
-        team.push(newManager)
-        index.concat(mHTML)
+        index = index.concat(mHTML(newManager))
         addEngineerOrInter()
     })
 }
@@ -78,8 +78,8 @@ function engineer() {
     .prompt(eQs)
     .then((answers) => {
         let newEngineer = new Engineer(answers.engineer,answers.engineerID,answers.eeMail,answers.eGH,)
-        team.push(newEngineer)
-        index.concat(eHTML)
+        console.log(eHTML(newEngineer))
+        index = index.concat(eHTML(newEngineer))
         addEngineerOrInter()
     })
 }
@@ -108,17 +108,20 @@ function intern() {
     .prompt(iQs)
     .then((answers) => {
         let newIntern = new Intern(answers.intern,answers.internID,answers.ieMail,answers.iSchool)
-        team.push(newIntern)
-        index.concat(iHTML)
+        index = index.concat(iHTML(newIntern))
         addEngineerOrInter()
     })
 }
 
 function HTMLify() {
+    console.log(index)
     index.concat(theEnd())
     putItInAFile()
 }
 
 function putItInAFile() {
-    
+    fs.writeFile('./dist/index.html',index,(err) => {
+        if (err) throw err;
+        console.log('The file has been saved!');
+      })
 }
