@@ -20,7 +20,7 @@ function mHTML(manager) {
         <body>
             <main>
                 <div class="row">
-                    <div class="col s12 m6">
+                    <div class="col s12 m3 z-depth-2">
                         <div class="card blue-grey darken-1">
                             <div class="card-content white-text">
                                 <span class="card-title">${manager.getName()}</span>
@@ -40,7 +40,7 @@ function mHTML(manager) {
 function eHTML(engineer){
     return `
 <div class="row">
-    <div class="col s12 m6">
+    <div class="col s12 m3 z-depth-2">
         <div class="card blue-grey darken-1">
             <div class="card-content white-text">
                 <span class="card-title">${engineer.getName()}</span>
@@ -49,7 +49,7 @@ function eHTML(engineer){
                     <p>Employee ID: ${engineer.getID()}</p>
                     <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a>
                     <br>
-                    <a href="${engineer.getGitHub()}">GitHub</a>
+                    <a target="_blank" href="${engineer.getGitHub()}">GitHub</a>
                 </div>
             </div>
         </div>
@@ -61,7 +61,7 @@ function eHTML(engineer){
 function iHTML(intern) {
     return`
 <div class="row">
-    <div class="col s12 m6">
+    <div class="col s12 m3 z-depth-2">
         <div class="card blue-grey darken-1">
             <div class="card-content white-text">
                 <span class="card-title">${intern.getName()}</span>

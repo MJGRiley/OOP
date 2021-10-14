@@ -1,9 +1,9 @@
-const inquire = require('inquirer')
-const fs = require('fs')
-const Manager = require('./lib/Manager')
+const inquire = require('inquirer') //to ask questions
+const fs = require('fs')//to manipulate files
+const Manager = require('./lib/Manager') //My classes
 const Engineer = require('./lib/Engineer')
 const Intern = require('./lib/Intern')
-const {eHTML,mHTML,iHTML,theEnd} = require('./src/generateHTML')
+const {eHTML,mHTML,iHTML,theEnd} = require('./src/generateHTML')//My functions
 let index = ''
 
 function myTeamMembers() {
@@ -47,7 +47,7 @@ function addEngineerOrInter() { //asks if you want to add an Engineer, Intern, o
     ]
     inquire 
     .prompt(eOIQs)
-    .then((answers) => {
+    .then((answers) => { //calls the function of which one you want to add
         if (answers.eOI == 'add an Engineer?') {engineer()}
         if (answers.eOI == 'add an Intern?') {intern()}
         if (answers.eOI == 'finish building your team?') {HTMLify()}
@@ -76,10 +76,9 @@ function engineer() {
     ]
     inquire // asks the questions above and returns answers in an object
     .prompt(eQs)
-    .then((answers) => {
+    .then((answers) => {//creates a new Engineer with the answers above
         let newEngineer = new Engineer(answers.engineer,answers.engineerID,answers.eeMail,answers.eGH,)
-        console.log(eHTML(newEngineer))
-        index = index.concat(eHTML(newEngineer))
+        index = index.concat(eHTML(newEngineer))//uses that newEngineer to generate the HTML and appends it
         addEngineerOrInter()
     })
 }
@@ -106,20 +105,19 @@ function intern() {
     ]
     inquire // asks the questions above and returns answers in an object
     .prompt(iQs)
-    .then((answers) => {
+    .then((answers) => {// uses the answers above to create a newIntern
         let newIntern = new Intern(answers.intern,answers.internID,answers.ieMail,answers.iSchool)
-        index = index.concat(iHTML(newIntern))
+        index = index.concat(iHTML(newIntern))// uses that construct to create HTML and appends it
         addEngineerOrInter()
     })
 }
 
-function HTMLify() {
-    console.log(index)
+function HTMLify() { //finishes off the HTML file and calls the writing function
     index.concat(theEnd())
     putItInAFile()
 }
 
-function putItInAFile() {
+function putItInAFile() { //this outputs the HTML to a file in the dist folder
     fs.writeFile('./dist/index.html',index,(err) => {
         if (err) throw err;
         console.log('The file has been saved!');
